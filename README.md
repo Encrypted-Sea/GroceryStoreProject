@@ -21,7 +21,7 @@ Use data validation and document your program where necessary.
 	- Ascending order (Price)
 
 
-![Exampl of what the inventory is supposed to look like](https://user-images.githubusercontent.com/73509244/223452181-c1b40c81-1faf-4919-b4c9-959ddfcfc813.jpg "Item Inventory")
+![Example of what the inventory is supposed to look like](https://user-images.githubusercontent.com/73509244/223452181-c1b40c81-1faf-4919-b4c9-959ddfcfc813.jpg "Item Inventory")
 
 ## Project Check list Overview
 1. Create inventory text file
