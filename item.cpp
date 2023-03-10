@@ -84,3 +84,15 @@ int populateArray(Item arrInventory[])
 	inventory.close();
 	return tick;
 }
+
+void outputInventory(Item arrInventory[], int numItem)
+{
+	for (int i = 0; i < numItem; i++)
+	{
+		std::cout << "\nItem " << (i + 1) << "\n__________________________";
+		std::cout << "\nID: " << arrInventory[i].get_id()
+			<< "\nName: " << arrInventory[i].get_name()
+			<< "\nDescription: " << arrInventory[i].get_description()
+			<< "\nPrice: " << arrInventory[i].get_price() << std::endl;
+	}
+}

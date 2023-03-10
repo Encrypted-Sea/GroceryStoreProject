@@ -41,5 +41,6 @@ class Item
 };
 
 int populateArray(Item[]);
+void outputInventory(Item[], int);
 
 #endif
