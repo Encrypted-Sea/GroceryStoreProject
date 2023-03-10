@@ -87,12 +87,25 @@ int populateArray(Item arrInventory[])
 
 void outputInventory(Item arrInventory[], int numItem)
 {
+	tableSeperation();
+	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
+	tableSeperation();
+	
 	for (int i = 0; i < numItem; i++)
 	{
-		std::cout << "\nItem " << (i + 1) << "\n__________________________";
-		std::cout << "\nID: " << arrInventory[i].get_id()
-			<< "\nName: " << arrInventory[i].get_name()
-			<< "\nDescription: " << arrInventory[i].get_description()
-			<< "\nPrice: " << arrInventory[i].get_price() << std::endl;
+		std::cout <<std::left
+			<< "\n| " << std::setw(5) << arrInventory[i].get_id()
+			<< " | " << std::setw(27) << arrInventory[i].get_name()
+			<< " | " << std::setw(55) << arrInventory[i].get_description()
+			<< " | " << arrInventory[i].get_price() << "  |";
 	}
+	tableSeperation();
+
+}
+
+void tableSeperation()
+{
+	std::cout << std::right;
+	std::cout << "\n+" << std::setfill('-') << std::setw(104) << "+";
+	std::cout << std::setfill(' ');
 }

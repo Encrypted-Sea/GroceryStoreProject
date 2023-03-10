@@ -11,7 +11,7 @@ int main()
 
 	numItem = populateArray(arrInventory);
 
-	std::cout << "\n\t\t-------------- New Item's within Inventory --------------" << std::endl;
+	std::cout << "\n\t\t############## New Item's within Inventory ##############" << std::endl;
 	outputInventory(arrInventory, numItem);
 
 	return 0;

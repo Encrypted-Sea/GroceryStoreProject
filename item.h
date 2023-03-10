@@ -1,4 +1,5 @@
 #include<iostream>
+#include<iomanip>
 #include<fstream>
 #include<string>
 
@@ -42,5 +43,7 @@ class Item
 
 int populateArray(Item[]);
 void outputInventory(Item[], int);
+void tableSeperation();
+
 
 #endif
