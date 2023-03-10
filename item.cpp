@@ -49,3 +49,38 @@ Item::Item()
 	name = "No name";
 	description = "No description";
 }
+
+int populateArray(Item arrInventory[])
+{
+	std::ifstream inventory;
+	inventory.open("InventoryList.txt");
+
+	//Will temporarily hold values pertaining to corresponding members
+	int tempID;
+	std::string tempName;
+	std::string tempDescription;
+	double tempPrice;
+
+	int tick = 0;
+	while (!inventory.eof() && tick < INVENTORY_SIZE)
+	{
+		inventory >> tempID;
+		arrInventory[tick].set_id(tempID);
+
+		//Only need to do .ignore() when you are doing a getline immediately after a extraction in the same stream
+		inventory.ignore();
+		std::getline(inventory, tempName);
+		arrInventory[tick].set_name(tempName);
+
+		std::getline(inventory, tempDescription);
+		arrInventory[tick].set_description(tempDescription);
+
+		inventory >> tempPrice;
+		arrInventory[tick].set_price(tempPrice);
+
+		tick++;
+	}
+
+	inventory.close();
+	return tick;
+}

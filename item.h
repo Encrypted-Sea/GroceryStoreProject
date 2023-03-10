@@ -40,4 +40,6 @@ class Item
 		Item();
 };
 
+int populateArray(Item[]);
+
 #endif
