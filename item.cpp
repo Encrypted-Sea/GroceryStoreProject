@@ -50,31 +50,38 @@ Item::Item()
 	description = "No description";
 }
 
+//Returns amount of items in list while populating array
 int populateArray(Item arrInventory[])
 {
 	std::ifstream inventory;
 	inventory.open("InventoryList.txt");
 
-	//Will temporarily hold values pertaining to corresponding members
+	//Will temporarily hold values pertaining to corresponding Item members
 	int tempID;
 	std::string tempName;
 	std::string tempDescription;
 	double tempPrice;
 
+	//Will read the inventoy file until it is over or storage is over capacity
 	int tick = 0;
 	while (!inventory.eof() && tick < INVENTORY_SIZE)
 	{
+		//Stores tempID to corresponding Item ID member
 		inventory >> tempID;
 		arrInventory[tick].set_id(tempID);
 
 		//Only need to do .ignore() when you are doing a getline immediately after a extraction in the same stream
 		inventory.ignore();
+
+		//Stores name to corresponding Item name member
 		std::getline(inventory, tempName);
 		arrInventory[tick].set_name(tempName);
 
+		//Stores description to corresponding Item description
 		std::getline(inventory, tempDescription);
 		arrInventory[tick].set_description(tempDescription);
 
+		//Stores price to corresponding Item price member
 		inventory >> tempPrice;
 		arrInventory[tick].set_price(tempPrice);
 
@@ -87,10 +94,12 @@ int populateArray(Item arrInventory[])
 
 void outputInventory(Item arrInventory[], int numItem)
 {
+	//Outputs header for table in console
 	tableSeperation();
 	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
 	tableSeperation();
 	
+	//Loop to output item members in table in console
 	for (int i = 0; i < numItem; i++)
 	{
 		std::cout <<std::left
@@ -103,6 +112,7 @@ void outputInventory(Item arrInventory[], int numItem)
 
 }
 
+//Outputs speration line in console
 void tableSeperation()
 {
 	std::cout << std::right;
