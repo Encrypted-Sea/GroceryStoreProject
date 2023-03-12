@@ -1,4 +1,5 @@
 #include<iostream>
+#include<iomanip>
 #include<fstream>
 #include<string>
 
@@ -39,5 +40,10 @@ class Item
 		//Constructor to initialize object with defualt values
 		Item();
 };
+
+int populateArray(Item[]);
+void outputInventory(Item[], int);
+void tableSeperation();
+
 
 #endif

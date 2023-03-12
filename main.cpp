@@ -5,34 +5,15 @@
 #include"item.h"
 
 int main()
-{
-	Item pineapple;
-	Item arrInventory[INVENTORY_SIZE] = {};
+{	
+	Item arrInventory[INVENTORY_SIZE] = {};	//Array to store up to 50 item objects
+	int numItem;							//Will number of items in inventory 
 
-	std::cout << std::showpoint << std::setprecision(2) << std::fixed; 
+	numItem = populateArray(arrInventory);	//Populates array with data from list
 
-	//Code for printing object attributes does not look pretty
-	//Try to see of you can replace all of the tabs with setwidth functions and so on
-	
-	//Prints default attributes of type item object "pineapple" immediately after initialization of object
-	std::cout << "\n\t\tDefault Item Attributes of Instance Pineapple"
-			<< "\n\nName: \t\t" << pineapple.get_name()
-			<< "\nID: \t\t" << pineapple.get_id()
-			<< "\nPrice: \t\t" << "$" << pineapple.get_price()
-			<< "\nDescription: \t" << pineapple.get_description() << std::endl;
-
-	//Test mutating attributes of type Item object "pineapple"
-	pineapple.set_name("pineapple");
-	pineapple.set_id(85963);
-	pineapple.set_price(3.24);
-	pineapple.set_description("A refrence to a dead song");
-
-	//Prints new attributes of type item object "pineapple" immediately after initialization of object
-	std::cout << "\n\t\tNew Item Attributes of Instance Pineapple"
-		<< "\n\nName: \t\t" << pineapple.get_name()
-		<< "\nID: \t\t" << pineapple.get_id()
-		<< "\nPrice: \t\t" << "$" << pineapple.get_price()
-		<< "\nDescription: \t" << pineapple.get_description() << std::endl;
+	//Outputs table data to console
+	std::cout << "\n\t\t############## New Item's within Inventory ##############" << std::endl;
+	outputInventory(arrInventory, numItem);
 
 	return 0;
 }
