@@ -44,6 +44,7 @@ class Item
 int populateArray(Item[]);
 void outputInventory(Item[], int);
 void tableSeperation();
+void elementItemSwap(Item[], int, int);
 
 
 #endif

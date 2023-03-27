@@ -119,3 +119,15 @@ void tableSeperation()
 	std::cout << "\n+" << std::setfill('-') << std::setw(104) << "+";
 	std::cout << std::setfill(' ');
 }
+
+//Swaps two elements within an array, expects arrInventory[index] as argument for int values
+//Currently testing how to just change element's value
+void elementItemSwap(Item arrInvetory[], int a, int b)
+{
+	Item temp;
+
+	temp = arrInvetory[a];
+	arrInvetory[a] = arrInvetory[b];
+	arrInvetory[b] = temp;
+
+}

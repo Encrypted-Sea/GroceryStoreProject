@@ -12,7 +12,12 @@ int main()
 	numItem = populateArray(arrInventory);	//Populates array with data from list
 
 	//Outputs table data to console
-	std::cout << "\n\t\t############## New Item's within Inventory ##############" << std::endl;
+	std::cout << "\n\t\t############## Item's within Inventory ##############" << std::endl;
+	outputInventory(arrInventory, numItem);
+
+	elementItemSwap(arrInventory, 0, 2);
+
+	std::cout << "\n\t\t############## Item's within Swapped Inventory ##############" << std::endl;
 	outputInventory(arrInventory, numItem);
 
 	return 0;
