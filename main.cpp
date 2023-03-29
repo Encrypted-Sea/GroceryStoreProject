@@ -15,5 +15,10 @@ int main()
 	std::cout << "\n\t\t############## Item's within Inventory ##############" << std::endl;
 	outputInventory(arrInventory, numItem);
 
+	quicksortPrice(arrInventory, 0, (numItem - 1));
+
+	std::cout << "\n\t\t############## Item's within Inventory ##############" << std::endl;
+	outputInventory(arrInventory, numItem);
+
 	return 0;
 }
