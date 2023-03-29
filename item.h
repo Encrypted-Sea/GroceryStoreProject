@@ -41,10 +41,18 @@ class Item
 		Item();
 };
 
+void quicksortId(Item[], int, int);
+void quicksortName(Item[], int, int);
+void quicksortPrice(Item[], int, int);
+
+int partitionId(Item[], int, int);
+int partitionName(Item[], int, int);
+int partitionPrice(Item[], int, int);
+
+void swapElements(Item[], int, int);
 int populateArray(Item[]);
+
 void outputInventory(Item[], int);
 void tableSeperation();
-void elementItemSwap(Item[], int, int);
-
 
 #endif
