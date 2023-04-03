@@ -1,6 +1,6 @@
 #include"item.h"
 
-//------------ Item Accessors and Mutators ------------
+//	============ Item Accessors and Mutators ============
 
 void Item::set_id(int new_id)
 {
@@ -50,52 +50,126 @@ Item::Item()
 	description = "No description";
 }
 
-void quicksortId(Item arr[], int start, int end)
+//	============ Function Defenitions ============
+
+//	------ Search & Sort Functions ------
+
+//Returns index of item with Id identical to search key
+int binarySearch(Item arrInventory[], int key, int SIZE)
+{
+	int start = 0;
+	int end = SIZE - 1;
+	int mid;
+
+	int tick = 0;
+	while (start <= end)
+	{
+		mid = (start + end) / 2;
+		
+		if (arrInventory[tick].get_id() < key)
+		{
+			end = mid - 1;
+		}
+		
+		else if (arrInventory[tick].get_id() > key)
+		{
+			start = mid + 1;
+		}
+
+		else //Only executes if item with identical Id is found
+		{
+			return mid;
+		}
+	}
+
+	return -1;	//Signifies that no results were found
+}
+
+//Returns index of item with name identical to search key
+int binarySearch(Item arrInventory[], std::string key, int SIZE)
+{
+	int start = 0;
+	int end = SIZE - 1;
+	int mid;
+
+	int tick = 0;
+	while (start <= end)
+	{
+		mid = (start + end) / 2;
+
+		if (arrInventory[tick].get_name() < key)
+		{
+			end = mid - 1;
+		}
+
+		else if (arrInventory[tick].get_name() > key)
+		{
+			start = mid + 1;
+		}
+
+		else //Only executes if item with identical Id is found
+		{
+			return mid;
+		}
+	}
+
+	return -1;	//Signifies that no results were found
+}
+
+//Sorts Item array in ascending order of Id number
+void quickSortId(Item arrInventory[], int start, int end, bool& isSorted)
 {
 	//Will keep on executing as long as the 'subarray' contains more than 1 element thanks to recursion
 	if (start < end)
 	{
-		int pIndex;								//Stores where the break point is in a partition during a pass
-		pIndex = partitionId(arr, start, end);	//Partitions array and returns where the break point occurs
+		int pIndex;										//Stores where the break point is in a partition during a pass
+		pIndex = partitionId(arrInventory, start, end);	//Partitions array and returns where the break point occurs
+
+		//Constantly breaks array into 'subarrays' defined by the boundaries of new partitions
+		
+		quickSortId(arrInventory, start, (pIndex - 1), isSorted);	//Recursive call to sort low partition
+		quickSortId(arrInventory, (pIndex + 1), end, isSorted);		//Recursive call to sort high partition
+	}
+
+	isSorted = true;
+}
+
+//Sorts Item array in ascending order of name 
+void quickSortName(Item arrInventory[], int start, int end, bool& isSorted)
+{
+	//Will keep on executing as long as the 'subarray' contains more than 1 element thanks to recursion
+	if (start < end)
+	{
+		int pIndex;											//Stores where the break point is in a partition during a pass
+		pIndex = partitionName(arrInventory, start, end);	//Partitions array and returns where the break point occurs
 
 
 		//Constantly breaks array into 'subarrays' defined by the boundaries of new partitions
 
-		quicksortId(arr, start, (pIndex - 1));	//Recursive call to sort low partition
-		quicksortId(arr, (pIndex + 1), end);	//Recursive call to sort high partition
+		quickSortName(arrInventory, start, (pIndex - 1), isSorted);	//Recursive call to sort low partition
+		quickSortName(arrInventory, (pIndex + 1), end, isSorted);	//Recursive call to sort high partition
 	}
+
+	isSorted = true;
 }
 
-void quicksortName(Item arr[], int start, int end)
+//Sorts Item array in ascending order of price 
+void quickSortPrice(Item arrInventory[], int start, int end, bool& isSorted)
 {
 	//Will keep on executing as long as the 'subarray' contains more than 1 element thanks to recursion
 	if (start < end)
 	{
 		int pIndex;									//Stores where the break point is in a partition during a pass
-		pIndex = partitionName(arr, start, end);	//Partitions array and returns where the break point occurs
+		pIndex = partitionPrice(arrInventory, start, end);	//Partitions array and returns where the break point occurs
 
 
 		//Constantly breaks array into 'subarrays' defined by the boundaries of new partitions
 
-		quicksortName(arr, start, (pIndex - 1));	//Recursive call to sort low partition
-		quicksortName(arr, (pIndex + 1), end);		//Recursive call to sort high partition
+		quickSortPrice(arrInventory, start, (pIndex - 1), isSorted);	//Recursive call to sort low partition
+		quickSortPrice(arrInventory, (pIndex + 1), end, isSorted);		//Recursive call to sort high partition
 	}
-}
 
-void quicksortPrice(Item arr[], int start, int end)
-{
-	//Will keep on executing as long as the 'subarray' contains more than 1 element thanks to recursion
-	if (start < end)
-	{
-		int pIndex;								//Stores where the break point is in a partition during a pass
-		pIndex = partitionPrice(arr, start, end);	//Partitions array and returns where the break point occurs
-
-
-		//Constantly breaks array into 'subarrays' defined by the boundaries of new partitions
-
-		quicksortPrice(arr, start, (pIndex - 1));	//Recursive call to sort low partition
-		quicksortPrice(arr, (pIndex + 1), end);		//Recursive call to sort high partition
-	}
+	isSorted = true;
 }
 
 //Partitions the array by Item Id
@@ -173,6 +247,15 @@ void swapElements(Item arrInvetory[], int a, int b)
 
 }
 
+//	------- Populate & Output Table Functions -------
+
+void menu()
+{
+	std::cout << "************ Welcome to Grocery Store Inventory ************";
+
+	std::cout << "Please select an option listed below";
+}
+
 //Returns amount of items in list while populating array
 int populateArray(Item arrInventory[])
 {
@@ -215,6 +298,27 @@ int populateArray(Item arrInventory[])
 	return tick;
 }
 
+void saveSort(Item arrInventory[], std::string fileName, int numItem)
+{
+	std::ofstream savedSort;
+	savedSort.open(fileName);
+	
+	int tick = 0;
+	
+	while (tick < numItem)
+	{
+		savedSort << arrInventory[tick].get_id() << std::endl;
+		savedSort << arrInventory[tick].get_name() << std::endl;
+		savedSort << arrInventory[tick].get_description() << std::endl;
+		savedSort << arrInventory[tick].get_price() << std::endl;
+		
+		tick++;
+	}
+	
+	savedSort.close();
+}
+
+//Outpus 
 void outputInventory(Item arrInventory[], int numItem)
 {
 	//Outputs header for table in console
@@ -235,6 +339,54 @@ void outputInventory(Item arrInventory[], int numItem)
 
 }
 
+void outputInventory(std::string fileName, int numItem)
+{
+	int tick = 0;												//Counter that will tell us when we passed the maximum inventory size
+	std::string tempId, tempName, tempDescription, tempPrice;	//Varaiables that will temperarily hold Item member data
+	std::ifstream savedSort;									//File with sorted data that will be read from
+	savedSort.open(fileName);
+
+	if (savedSort.fail())
+	{
+		std::cout << "\nProgram could not locate file by name " << fileName << std::endl;
+		return;
+	}
+
+	//Outputs header for table in console
+	tableSeperation();
+	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
+	tableSeperation();
+
+	//Loop to read the text file of a saved sort and output it into the console
+	while (!savedSort.eof() && tick < INVENTORY_SIZE)
+	{
+		//Reads file to store Id of Item to output to console
+		savedSort >> tempId;
+
+		savedSort.ignore();
+
+		//Reads file to store Id of Item to output to console
+		std::getline(savedSort, tempName);
+
+		//Reads file to store Id of Item to output to console
+		std::getline(savedSort, tempDescription);
+
+		//Reads file to store Id of Item to output to console
+		savedSort >> tempPrice;
+
+		//Outputs temperary variable values to console to display Item data as a table
+		std::cout << std::left
+			<< "\n| " << std::setw(5) << tempId
+			<< " | " << std::setw(27) << tempName
+			<< " | " << std::setw(55) << tempDescription
+			<< " | " << tempPrice << "  |";
+
+		tick++;
+	}
+	tableSeperation();
+	savedSort.close();
+}
+
 //Outputs speration line in console
 void tableSeperation()
 {
@@ -242,4 +394,3 @@ void tableSeperation()
 	std::cout << "\n+" << std::setfill('-') << std::setw(104) << "+";
 	std::cout << std::setfill(' ');
 }
-
