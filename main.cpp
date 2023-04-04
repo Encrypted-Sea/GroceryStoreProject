@@ -15,5 +15,7 @@ int main()
 	std::cout << "\n\t\t############## New Item's within Inventory ##############" << std::endl;
 	outputInventory(arrInventory, numItem);
 
+	std::cout << "hello";
+
 	return 0;
 }
