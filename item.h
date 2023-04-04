@@ -89,4 +89,6 @@ void tableSeperation();
 
 //	------- Populate & Output Functions -------
 
+void numValid(int);
+
 #endif

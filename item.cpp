@@ -281,6 +281,7 @@ void menuChoice(Item arrInventory[], int numItem)
 		
 		std::cout << "\nChoose a listed option: ";
 		std::cin >> userChoice;
+		numValid(userChoice);
 		
 		switch (userChoice)
 		{
@@ -293,6 +294,7 @@ void menuChoice(Item arrInventory[], int numItem)
 
 					std::cout << "\nEnter ID: ";
 					std::cin >> keyId;
+					numValid(keyId);
 
 					indexFound = binarySearch(arrInventory, keyId, numItem);
 
@@ -548,4 +550,17 @@ void tableSeperation()
 	std::cout << std::right;
 	std::cout << "\n+" << std::setfill('-') << std::setw(104) << "+";
 	std::cout << std::setfill(' ');
+}
+
+void numValid(int input)
+{
+	while (input < -1 || std::cin.fail())
+	{
+		std::cin.clear();
+		std::cin.ignore();
+		std::cout << "\n\tPlease input a valid value!: ";
+		std::cin >> input;
+		std::cin.clear();
+		std::cin.ignore();
+	}
 }
