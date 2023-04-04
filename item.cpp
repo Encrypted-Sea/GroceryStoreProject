@@ -60,18 +60,20 @@ int binarySearch(Item arrInventory[], int key, int SIZE)
 	int start = 0;
 	int end = SIZE - 1;
 	int mid;
+	int midValue;
 
 	int tick = 0;
 	while (start <= end)
 	{
 		mid = (start + end) / 2;
+		midValue = arrInventory[mid].get_id();
 		
-		if (arrInventory[tick].get_id() < key)
+		if (key < midValue)
 		{
 			end = mid - 1;
 		}
 		
-		else if (arrInventory[tick].get_id() > key)
+		else if (key > midValue)
 		{
 			start = mid + 1;
 		}
@@ -91,18 +93,19 @@ int binarySearch(Item arrInventory[], std::string key, int SIZE)
 	int start = 0;
 	int end = SIZE - 1;
 	int mid;
+	std::string midValue;
 
 	int tick = 0;
 	while (start <= end)
 	{
 		mid = (start + end) / 2;
 
-		if (arrInventory[tick].get_name() < key)
+		if (key < midValue)
 		{
 			end = mid - 1;
 		}
 
-		else if (arrInventory[tick].get_name() > key)
+		else if (key > midValue)
 		{
 			start = mid + 1;
 		}
@@ -249,11 +252,101 @@ void swapElements(Item arrInvetory[], int a, int b)
 
 //	------- Populate & Output Table Functions -------
 
-void menu()
+void menuChoice(Item arrInventory[], int numItem)
 {
-	std::cout << "************ Welcome to Grocery Store Inventory ************";
+	//Used to open diffrent files throughout the program
+	std::string fileName;
+	
+	//Will store user input and results of desired search result
+	int indexFound;
+	int keyId;
+	std::string keyName;
 
-	std::cout << "Please select an option listed below";
+	//Used to see if the array has been sorted a specific way before.
+	bool wasIdSorted = false;
+	bool wasNameSorted = false;
+	bool wasPriceSorted = false;
+
+	int userChoice = 0;
+	do
+	{ 
+		std::cout << "\n-*-*-*-*-*-*-*-*-*-*-*-* Grocery Store Inventory *-*-*-*-*-*-*-*-*-*-*-*-" << std::endl;
+		std::cout << "\n\t1. Search Inventory by ID"
+				<< "\n\t2. Search Invemtory by Name"
+				<< "\n\t3. Display Inventory Unsorted"
+				<< "\n\t4. Display Inventory by ID (Asc)"
+				<< "\n\t5. Display Inventory by Name (Asc)"
+				<< "\n\t6. Display Inventory by Price (Asc)"
+				<< "\n\t7. Exit Program" << std::endl;
+		
+		std::cout << "\nChoose a listed option: ";
+		std::cin >> userChoice;
+		
+		switch (userChoice)
+		{
+			case 1:	//Search through Inventory by Id
+				
+				fileName = "InventoryId.txt";
+				if (wasIdSorted)
+				{
+					populateArray(arrInventory, fileName, numItem);
+
+					std::cout << "\nEnter ID: ";
+					std::cin >> keyId;
+
+					indexFound = binarySearch(arrInventory, keyId, numItem);
+
+					outputSearch(arrInventory, indexFound);
+					
+					pressEnter();
+				}
+				
+				else
+				{
+					quickSortId(arrInventory, 0, (numItem - 1), wasIdSorted);
+					saveSort(arrInventory, fileName, numItem);
+					
+					std::cout << "\nEnter ID: ";
+					std::cin >> keyId;
+
+					indexFound = binarySearch(arrInventory, keyId, numItem);
+
+					outputSearch(arrInventory, indexFound);
+
+					pressEnter();
+				}
+				break;
+
+			case 2:
+				//Search by Name
+				break;
+
+			case 3:
+			fileName = "InventoryList.txt";
+			outputInventory(fileName, numItem);
+
+			case 4:
+				//Sort by Id
+				break;
+
+			case 5:
+				//sort by Name
+				break;
+
+			case 6:
+				//Sort by Price
+				break;
+
+			case 7:
+				userChoice = -1;
+				break;
+				
+			default:
+				std::cout << "Invalid input, please try again...";
+				userChoice = 0;
+		}
+
+	}while(userChoice > -1);
 }
 
 //Returns amount of items in list while populating array
@@ -276,7 +369,6 @@ int populateArray(Item arrInventory[])
 		inventory >> tempID;
 		arrInventory[tick].set_id(tempID);
 
-		//Only need to do .ignore() when you are doing a getline immediately after a extraction in the same stream
 		inventory.ignore();
 
 		//Stores name to corresponding Item name member
@@ -296,6 +388,46 @@ int populateArray(Item arrInventory[])
 
 	inventory.close();
 	return tick;
+}
+
+//Only populates array 
+void populateArray(Item arrInventory[], std::string fileName, int numItem)
+{
+	std::ifstream inventory;
+	inventory.open(fileName);
+
+	//Will temporarily hold values pertaining to corresponding Item members
+	int tempID;
+	std::string tempName;
+	std::string tempDescription;
+	double tempPrice;
+
+	//Will read the inventoy file until it is over or 
+	int tick = 0;
+	while (!inventory.eof() && tick < numItem)
+	{
+		//Stores tempID to corresponding Item ID member
+		inventory >> tempID;
+		arrInventory[tick].set_id(tempID);
+
+		inventory.ignore();
+
+		//Stores name to corresponding Item name member
+		std::getline(inventory, tempName);
+		arrInventory[tick].set_name(tempName);
+
+		//Stores description to corresponding Item description
+		std::getline(inventory, tempDescription);
+		arrInventory[tick].set_description(tempDescription);
+
+		//Stores price to corresponding Item price member
+		inventory >> tempPrice;
+		arrInventory[tick].set_price(tempPrice);
+
+		tick++;
+	}
+
+	inventory.close();
 }
 
 void saveSort(Item arrInventory[], std::string fileName, int numItem)
@@ -318,14 +450,25 @@ void saveSort(Item arrInventory[], std::string fileName, int numItem)
 	savedSort.close();
 }
 
+void outputSearch(Item arrInventory[], int index)
+{
+	std::cout << "\nItem found at index: " << index;
+
+	tableHeader();
+
+	std::cout << std::left
+		<< "\n| " << std::setw(5) << arrInventory[index].get_id()
+		<< " | " << std::setw(27) << arrInventory[index].get_name()
+		<< " | " << std::setw(55) << arrInventory[index].get_description()
+		<< " | " << arrInventory[index].get_price() << "  |";
+
+	tableSeperation();
+}
+
 //Outpus 
 void outputInventory(Item arrInventory[], int numItem)
 {
-	//Outputs header for table in console
-	tableSeperation();
-	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
-	tableSeperation();
-
+	tableHeader();
 	//Loop to output item members in table in console
 	for (int i = 0; i < numItem; i++)
 	{
@@ -353,10 +496,7 @@ void outputInventory(std::string fileName, int numItem)
 	}
 
 	//Outputs header for table in console
-	tableSeperation();
-	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
-	tableSeperation();
-
+	tableHeader();
 	//Loop to read the text file of a saved sort and output it into the console
 	while (!savedSort.eof() && tick < INVENTORY_SIZE)
 	{
@@ -387,7 +527,22 @@ void outputInventory(std::string fileName, int numItem)
 	savedSort.close();
 }
 
-//Outputs speration line in console
+void pressEnter()
+{
+	std::cout << "\nPress Enter to Continue...";
+	std::cin.ignore();
+	std::cin.get();
+}
+
+void tableHeader()
+{
+	//Outputs header for table in console
+	tableSeperation();
+	std::cout << std::left << std::setw(9) << "\n| ID" << std::setw(30) << "| Name" << std::setw(58) << "| Description" << "| Price |";
+	tableSeperation();
+}
+
+//Seperates 
 void tableSeperation()
 {
 	std::cout << std::right;

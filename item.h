@@ -64,19 +64,29 @@ void swapElements(Item[], int, int);
 
 //	------- Populate & Output Functions -------
 
-void menu();
+//Displays menu options and performs selected operation from menu
+void menuChoice(Item[], int);
 
-//Reads data from inventory text file and populates Item array using the data while returning number of Items created
+//Overloaded populates array with data read from a text file; one also returns amount of items in inventory
 int populateArray(Item[]);
+void populateArray(Item[], std::string,int);
 
 //Saves current state of array to text a file, presumably after sorting it
 void saveSort(Item[], std::string, int);
+
+void outputSearch(Item[], int);
 
 //Overloaded data output functions to print contents of data structure (Item array or file)
 void outputInventory(Item[], int);
 void outputInventory(std::string, int);
 
+void pressEnter(); 
+
+void tableHeader();
+
 //Used to create the horizontal lines seperating a table
 void tableSeperation();
+
+//	------- Populate & Output Functions -------
 
 #endif
