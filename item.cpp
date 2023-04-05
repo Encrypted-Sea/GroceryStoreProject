@@ -99,6 +99,7 @@ int binarySearch(Item arrInventory[], std::string key, int SIZE)
 	while (start <= end)
 	{
 		mid = (start + end) / 2;
+		std::string midvalue = arrInventory[tick].get_name();
 
 		if (key < midValue)
 		{
@@ -255,12 +256,15 @@ void swapElements(Item arrInvetory[], int a, int b)
 void menuChoice(Item arrInventory[], int numItem)
 {
 	//Used to open diffrent files throughout the program
-	std::string fileName;
+	std::string fileName = "";
 	
+	//Used to see if a search result was found
+	bool isSearchFound;
+
 	//Will store user input and results of desired search result
-	int indexFound;
-	int keyId;
-	std::string keyName;
+	int keyId = 0;
+	int indexFound = 0;
+	std::string keyName = "";
 
 	//Used to see if the array has been sorted a specific way before.
 	bool wasIdSorted = false;
@@ -297,8 +301,12 @@ void menuChoice(Item arrInventory[], int numItem)
 					numValid(keyId);
 
 					indexFound = binarySearch(arrInventory, keyId, numItem);
+					isSearchFound = searchValid(indexFound, keyId);
 
-					outputSearch(arrInventory, indexFound);
+					if (isSearchFound)
+					{
+						outputSearchResults(arrInventory, indexFound);
+					}
 					
 					pressEnter();
 				}
@@ -310,17 +318,62 @@ void menuChoice(Item arrInventory[], int numItem)
 					
 					std::cout << "\nEnter ID: ";
 					std::cin >> keyId;
+					numValid(keyId);
 
 					indexFound = binarySearch(arrInventory, keyId, numItem);
+					isSearchFound = searchValid(indexFound, keyId);
 
-					outputSearch(arrInventory, indexFound);
-
+					if (isSearchFound)
+					{
+						outputSearchResults(arrInventory, indexFound);
+					}
+					
 					pressEnter();
 				}
 				break;
 
 			case 2:
-				//Search by Name
+				
+				fileName = "InventoryName.txt";
+				if (wasNameSorted)
+				{
+					populateArray(arrInventory, fileName, numItem);
+
+					std::cout << "\nEnter Name: ";
+					std::cin.ignore();
+					std::getline(std::cin, keyName);
+
+					indexFound = binarySearch(arrInventory, keyName, numItem);
+					isSearchFound = searchValid(indexFound, keyName);
+
+					if (isSearchFound)
+					{
+						outputSearchResults(arrInventory, indexFound);
+					}
+
+					pressEnter();
+				}
+
+				else
+				{
+					quickSortName(arrInventory, 0, (numItem - 1), wasNameSorted);
+					saveSort(arrInventory, fileName, numItem);
+
+					std::cout << "\nEnter Name: ";
+					std::cin.ignore();
+					std::getline(std::cin, keyName);
+					std::cin.ignore();
+
+					indexFound = binarySearch(arrInventory, keyName, numItem);
+					isSearchFound = searchValid(indexFound, keyName);
+
+					if (isSearchFound)
+					{
+						outputSearchResults(arrInventory, indexFound);
+					}
+
+					pressEnter();
+				}
 				break;
 
 			case 3:
@@ -452,8 +505,8 @@ void saveSort(Item arrInventory[], std::string fileName, int numItem)
 	savedSort.close();
 }
 
-void outputSearch(Item arrInventory[], int index)
-{
+void outputSearchResults(Item arrInventory[], int index)
+{	
 	std::cout << "\nItem found at index: " << index;
 
 	tableHeader();
@@ -552,15 +605,39 @@ void tableSeperation()
 	std::cout << std::setfill(' ');
 }
 
-void numValid(int input)
+bool searchValid(int index, int key)
+{	
+	if (index == -1)
+	{
+		std::cout << "\nNo results found matching ID search " << key << ", try again later!";
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool searchValid(int index, std::string key)
+{
+	if (index == -1)
+	{
+		std::cout << "\nNo results found matching Name search " << key << ", try again later!";
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void numValid(int& input)
 {
 	while (input < -1 || std::cin.fail())
 	{
 		std::cin.clear();
 		std::cin.ignore();
-		std::cout << "\n\tPlease input a valid value!: ";
+		std::cout << "\tPlease input a valid value!: ";
 		std::cin >> input;
-		std::cin.clear();
-		std::cin.ignore();
 	}
 }
