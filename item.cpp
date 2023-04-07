@@ -57,14 +57,15 @@ Item::Item()
 //Returns index of item with Id identical to search key
 int binarySearch(Item arrInventory[], int key, int SIZE)
 {
-	int start = 0;
-	int end = SIZE - 1;
-	int mid;
-	int midValue;
+	int start = 0;		//Will store starting index of array partitions
+	int end = SIZE - 1;	//Will store ending index of array partitions
+	int mid;			//Will store middle index of array partitions
+	int midValue;		//Will store ID of middle index
 
-	int tick = 0;
+	//While starting index is less than or equal to ending boundary
 	while (start <= end)
 	{
+		//Calculates middle index and its value
 		mid = (start + end) / 2;
 		midValue = arrInventory[mid].get_id();
 		
@@ -78,7 +79,7 @@ int binarySearch(Item arrInventory[], int key, int SIZE)
 			start = mid + 1;
 		}
 
-		else //Only executes if item with identical Id is found
+		else //Only executes if item with identical key is found
 		{
 			return mid;
 		}
@@ -90,16 +91,17 @@ int binarySearch(Item arrInventory[], int key, int SIZE)
 //Returns index of item with name identical to search key
 int binarySearch(Item arrInventory[], std::string key, int SIZE)
 {
-	int start = 0;
-	int end = SIZE - 1;
-	int mid;
-	std::string midValue;
+	int start = 0;			//Will store starting index of array partitions
+	int end = SIZE - 1;		//Will store ending index of array partitions
+	int mid;				//Will store middle index of array partitions
+	std::string midValue;	//Will store name of middle index
 
-	int tick = 0;
+	//While starting index is less than or equal to ending boundary
 	while (start <= end)
 	{
+		//Calculates middle index of current partition and its value
 		mid = (start + end) / 2;
-		std::string midvalue = arrInventory[tick].get_name();
+		midValue = arrInventory[mid].get_name();
 
 		if (key < midValue)
 		{
@@ -163,7 +165,7 @@ void quickSortPrice(Item arrInventory[], int start, int end, bool& isSorted)
 	//Will keep on executing as long as the 'subarray' contains more than 1 element thanks to recursion
 	if (start < end)
 	{
-		int pIndex;									//Stores where the break point is in a partition during a pass
+		int pIndex;											//Stores where the break point is in a partition during a pass
 		pIndex = partitionPrice(arrInventory, start, end);	//Partitions array and returns where the break point occurs
 
 
@@ -255,16 +257,16 @@ void swapElements(Item arrInvetory[], int a, int b)
 
 void menuChoice(Item arrInventory[], int numItem)
 {
-	//Used to open diffrent files throughout the program
+	//Used to open different files throughout the program
 	std::string fileName = "";
 	
 	//Used to see if a search result was found
 	bool isSearchFound;
 
-	//Will store user input and results of desired search result
-	int keyId = 0;
-	int indexFound = 0;
-	std::string keyName = "";
+	//Will store user input of search and its results
+	int keyId = -1;
+	int indexFound = -1;
+	std::string keyName = "No key";
 
 	//Used to see if the array has been sorted a specific way before.
 	bool wasIdSorted = false;
@@ -283,26 +285,31 @@ void menuChoice(Item arrInventory[], int numItem)
 				<< "\n\t6. Display Inventory by Price (Asc)"
 				<< "\n\t7. Exit Program" << std::endl;
 		
+		//Prompt for user input of menu choices
 		std::cout << "\nChoose a listed option: ";
 		std::cin >> userChoice;
 		numValid(userChoice);
 		
 		switch (userChoice)
 		{
-			case 1:	//Search through Inventory by Id
+			case 1:	//Search through Inventory for Id
 				
 				fileName = "InventoryId.txt";
 				if (wasIdSorted)
 				{
+					//Populates array from sorted text file to search through later
 					populateArray(arrInventory, fileName, numItem);
 
+					//Prompt for user input of keyId to search through inventory for
 					std::cout << "\nEnter ID: ";
 					std::cin >> keyId;
 					numValid(keyId);
 
+					//Calculates index if and where searched Item is within array
 					indexFound = binarySearch(arrInventory, keyId, numItem);
 					isSearchFound = searchValid(indexFound, keyId);
 
+					//Outputs where Item was found in inventory
 					if (isSearchFound)
 					{
 						outputSearchResults(arrInventory, indexFound);
@@ -313,16 +320,20 @@ void menuChoice(Item arrInventory[], int numItem)
 				
 				else
 				{
+					//Sorts array by ID and then saves the result as a text file
 					quickSortId(arrInventory, 0, (numItem - 1), wasIdSorted);
 					saveSort(arrInventory, fileName, numItem);
 					
+					//Prompt for user input of keyId to search through inventory for
 					std::cout << "\nEnter ID: ";
 					std::cin >> keyId;
 					numValid(keyId);
 
+					//Calculates index if and where searched Item is within array
 					indexFound = binarySearch(arrInventory, keyId, numItem);
 					isSearchFound = searchValid(indexFound, keyId);
 
+					//Outputs where Item was found in inventory
 					if (isSearchFound)
 					{
 						outputSearchResults(arrInventory, indexFound);
@@ -332,67 +343,139 @@ void menuChoice(Item arrInventory[], int numItem)
 				}
 				break;
 
-			case 2:
+			case 2:	//Search through Inventory for Name
 				
 				fileName = "InventoryName.txt";
 				if (wasNameSorted)
 				{
+					//Populates array from sorted text file to through later
 					populateArray(arrInventory, fileName, numItem);
 
+					//Prompt for user input of keyName to search through inventory for
 					std::cout << "\nEnter Name: ";
 					std::cin.ignore();
 					std::getline(std::cin, keyName);
 
+					//Calculates index if and where searched Item is within array
 					indexFound = binarySearch(arrInventory, keyName, numItem);
 					isSearchFound = searchValid(indexFound, keyName);
 
+					//Outputs where Item was found in inventory
 					if (isSearchFound)
 					{
 						outputSearchResults(arrInventory, indexFound);
 					}
+
+					pressEnter(true);
+				}
+
+				else
+				{
+					//Sorts array by Name and then saves the result as a text file
+					quickSortName(arrInventory, 0, (numItem - 1), wasNameSorted);
+					saveSort(arrInventory, fileName, numItem);
+
+					//Prompt for user input of keyName to search through inventory
+					std::cout << "\nEnter Name: ";
+					std::cin.ignore();
+					std::getline(std::cin, keyName);
+
+					//Calculates index if and where searched Item is within array
+					indexFound = binarySearch(arrInventory, keyName, numItem);
+					isSearchFound = searchValid(indexFound, keyName);
+
+					//Outputs where Item was found in inventory
+					if (isSearchFound)
+					{
+						outputSearchResults(arrInventory, indexFound);
+					}
+
+					pressEnter(true);
+				}
+				break;
+
+			case 3:	//Display Inventory unsorted (how textfile was ordered originally)
+			
+			fileName = "InventoryList.txt";
+			outputInventory(fileName, numItem);
+			
+			pressEnter();
+			break;
+
+			case 4:	//Display Inventory sorted by ID
+				
+				fileName = "InventoryId.txt";
+				if (wasIdSorted)
+				{
+					//Outputs contents of the saved ID sort to console
+					outputInventory(fileName, numItem);
 
 					pressEnter();
 				}
 
 				else
 				{
-					quickSortName(arrInventory, 0, (numItem - 1), wasNameSorted);
+					//Sorts array by ID and then saves the result as a text file
+					quickSortId(arrInventory, 0, (numItem - 1), wasIdSorted);
 					saveSort(arrInventory, fileName, numItem);
 
-					std::cout << "\nEnter Name: ";
-					std::cin.ignore();
-					std::getline(std::cin, keyName);
-					std::cin.ignore();
-
-					indexFound = binarySearch(arrInventory, keyName, numItem);
-					isSearchFound = searchValid(indexFound, keyName);
-
-					if (isSearchFound)
-					{
-						outputSearchResults(arrInventory, indexFound);
-					}
+					//Outputs sorted array to console
+					outputInventory(arrInventory, numItem);
 
 					pressEnter();
 				}
 				break;
 
-			case 3:
-			fileName = "InventoryList.txt";
-			outputInventory(fileName, numItem);
+			case 5:	//Display Inventory Sorted by Name
+				
+				fileName = "InventoryName.txt";
+				if (wasNameSorted)
+				{
+					//Outputs contents of the saved Name sort to console
+					outputInventory(fileName, numItem);
 
-			case 4:
-				//Sort by Id
+					pressEnter();
+				}
+
+				else
+				{
+					//Sorts array by Name and then saves the result as a text file
+					quickSortName(arrInventory, 0, (numItem - 1), wasNameSorted);
+					saveSort(arrInventory, fileName, numItem);
+
+					//Outputs sorted array to console
+					outputInventory(arrInventory, numItem);
+
+					pressEnter();
+				}
 				break;
 
-			case 5:
-				//sort by Name
+			case 6:	//Display Inventory sorted by Price
+				
+				fileName = "InventoryPrice.txt";
+				if (wasPriceSorted)
+				{
+					//Outputs contents of the saved Price sort to console
+					outputInventory(fileName, numItem);
+
+					pressEnter();
+				}
+
+				else
+				{
+					//Sorts array by Price and then saves the result as a text file
+					quickSortPrice(arrInventory, 0, (numItem -1), wasPriceSorted);
+					saveSort(arrInventory, fileName, numItem);
+
+					//Outputs sorted array to console
+					outputInventory(arrInventory, numItem);
+
+					pressEnter();
+				}
 				break;
 
-			case 6:
-				//Sort by Price
-				break;
-
-			case 7:
+			case 7:	//Exit the program
+				std::cout << "\nExiting program...";
 				userChoice = -1;
 				break;
 				
@@ -404,7 +487,7 @@ void menuChoice(Item arrInventory[], int numItem)
 	}while(userChoice > -1);
 }
 
-//Returns amount of items in list while populating array
+//Returns amount of items in list while populating array from file
 int populateArray(Item arrInventory[])
 {
 	std::ifstream inventory;
@@ -445,7 +528,7 @@ int populateArray(Item arrInventory[])
 	return tick;
 }
 
-//Only populates array 
+//Populates array using the passed file name
 void populateArray(Item arrInventory[], std::string fileName, int numItem)
 {
 	std::ifstream inventory;
@@ -457,7 +540,7 @@ void populateArray(Item arrInventory[], std::string fileName, int numItem)
 	std::string tempDescription;
 	double tempPrice;
 
-	//Will read the inventoy file until it is over or 
+	//Will read the inventoy file until it is over or exceeds inventory limit
 	int tick = 0;
 	while (!inventory.eof() && tick < numItem)
 	{
@@ -485,13 +568,16 @@ void populateArray(Item arrInventory[], std::string fileName, int numItem)
 	inventory.close();
 }
 
+//Saves current state of array to text file array. Presumably used after a array was sorted
 void saveSort(Item arrInventory[], std::string fileName, int numItem)
 {
+	//Creates text file using passed value of fileName
 	std::ofstream savedSort;
 	savedSort.open(fileName);
 	
 	int tick = 0;
 	
+	//Stores array to text file until inventory limit is exceeded
 	while (tick < numItem)
 	{
 		savedSort << arrInventory[tick].get_id() << std::endl;
@@ -505,22 +591,22 @@ void saveSort(Item arrInventory[], std::string fileName, int numItem)
 	savedSort.close();
 }
 
+//Outputs data of Item at an index
 void outputSearchResults(Item arrInventory[], int index)
 {	
 	std::cout << "\nItem found at index: " << index;
 
+	//Outputs data of Item to console as a table
 	tableHeader();
-
 	std::cout << std::left
 		<< "\n| " << std::setw(5) << arrInventory[index].get_id()
 		<< " | " << std::setw(27) << arrInventory[index].get_name()
 		<< " | " << std::setw(55) << arrInventory[index].get_description()
 		<< " | " << arrInventory[index].get_price() << "  |";
-
 	tableSeperation();
 }
 
-//Outpus 
+//Outputs data of Items in array to console as a table
 void outputInventory(Item arrInventory[], int numItem)
 {
 	tableHeader();
@@ -537,6 +623,7 @@ void outputInventory(Item arrInventory[], int numItem)
 
 }
 
+//Outputs data of Item from a text file
 void outputInventory(std::string fileName, int numItem)
 {
 	int tick = 0;												//Counter that will tell us when we passed the maximum inventory size
@@ -553,7 +640,7 @@ void outputInventory(std::string fileName, int numItem)
 	//Outputs header for table in console
 	tableHeader();
 	//Loop to read the text file of a saved sort and output it into the console
-	while (!savedSort.eof() && tick < INVENTORY_SIZE)
+	while (!savedSort.eof() && tick < numItem)
 	{
 		//Reads file to store Id of Item to output to console
 		savedSort >> tempId;
@@ -582,13 +669,28 @@ void outputInventory(std::string fileName, int numItem)
 	savedSort.close();
 }
 
-void pressEnter()
+//'Eats' an input so that user has to press enter to continue, used to limit data displayed at once
+void pressEnter(bool isGetline)
 {
-	std::cout << "\nPress Enter to Continue...";
-	std::cin.ignore();
-	std::cin.get();
+	//Works diffrently depending on what previous method was used to collect data from user.
+	//Getline already 'eats' an input if implememted properly.
+
+	if (isGetline)
+	{
+		std::cout << "\nPress Enter to Continue...";
+		std::cin.ignore();
+	}
+	
+	//Implying we used cin to collect last user input
+	else
+	{
+		std::cout << "\nPress Enter to Continue...";
+		std::cin.ignore();
+		std::cin.get();	//'Eats' an input
+	}
 }
 
+//Displays column names of table header using Item attributes
 void tableHeader()
 {
 	//Outputs header for table in console
@@ -597,7 +699,7 @@ void tableHeader()
 	tableSeperation();
 }
 
-//Seperates 
+//Creates the horizontal lines seperating the table of Items; 'creates the lines for the rows'
 void tableSeperation()
 {
 	std::cout << std::right;
@@ -605,6 +707,7 @@ void tableSeperation()
 	std::cout << std::setfill(' ');
 }
 
+//Checks if search was found within inventory 
 bool searchValid(int index, int key)
 {	
 	if (index == -1)
@@ -618,25 +721,32 @@ bool searchValid(int index, int key)
 	}
 }
 
+//Checks if search was found within inventory 
 bool searchValid(int index, std::string key)
 {
+	//The search was not found within the inventory
 	if (index == -1)
 	{
 		std::cout << "\nNo results found matching Name search " << key << ", try again later!";
 		return false;
 	}
+	
 	else
 	{
 		return true;
 	}
 }
 
+//Validates integer input until program may store it
 void numValid(int& input)
 {
 	while (input < -1 || std::cin.fail())
 	{
+		//Wipes the buffer
 		std::cin.clear();
 		std::cin.ignore();
+		
+		//Prompt to input new value
 		std::cout << "\tPlease input a valid value!: ";
 		std::cin >> input;
 	}

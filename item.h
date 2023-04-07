@@ -67,7 +67,7 @@ void swapElements(Item[], int, int);
 //Displays menu options and performs selected operation from menu
 void menuChoice(Item[], int);
 
-//Overloaded populates array with data read from a text file; one also returns amount of items in inventory
+//Overloaded, populates array with data read from a text file; one also returns amount of items in inventory
 int populateArray(Item[]);
 void populateArray(Item[], std::string,int);
 
@@ -80,18 +80,22 @@ void outputSearchResults(Item[], int);
 void outputInventory(Item[], int);
 void outputInventory(std::string, int);
 
-void pressEnter(); 
+//Makes it so that you need to press enter to continue; used so that user has time to process outputted data
+void pressEnter(bool = false); 
 
+//Used to create the header of the table for Items; displays column names based on Item attributes
 void tableHeader();
 
-//Used to create the horizontal lines seperating a table
+//Used to create the horizontal lines seperating of the table of Items
 void tableSeperation();
 
 //	------- Data Validation Functions -------
 
+//Overloaded, displays error message and what the user tried to search for if search is not valid
 bool searchValid(int, int);
 bool searchValid(int, std::string);
 
+//Used to check if user inputted integer is valid
 void numValid(int&);
 
 #endif
