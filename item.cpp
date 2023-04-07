@@ -276,6 +276,7 @@ void menuChoice(Item arrInventory[], int numItem)
 	int userChoice = 0;
 	do
 	{ 
+		std::cout << std::showpoint << std::fixed << std::setprecision(2);
 		std::cout << "\n-*-*-*-*-*-*-*-*-*-*-*-* Grocery Store Inventory *-*-*-*-*-*-*-*-*-*-*-*-" << std::endl;
 		std::cout << "\n\t1. Search Inventory by ID"
 				<< "\n\t2. Search Invemtory by Name"
