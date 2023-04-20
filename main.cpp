@@ -3,6 +3,7 @@
 #include<string>
 #include<fstream>
 #include"item.h"
+#include"localfunctions.h"
 
 int main()
 {	
