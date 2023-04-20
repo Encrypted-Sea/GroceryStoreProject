@@ -1,5 +1,5 @@
 #include "item.h"
-#include "Header.h"
+#include "localfunctions.h"
 
 //Sorts Item array in ascending order of Id number
 void quickSortId(Item arrInventory[], int start, int end, bool& isSorted)

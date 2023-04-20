@@ -1,5 +1,5 @@
 #include "item.h"
-#include "Header.h"
+#include "localfunctions.h"
 
 //Outputs data of Item at an index
 void outputSearchResults(Item arrInventory[], int index)

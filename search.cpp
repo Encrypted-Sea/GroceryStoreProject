@@ -1,5 +1,5 @@
 #include "item.h"
-#include "Header.h"
+#include "localfunctions.h"
 //Returns index of item with Id identical to search key
 int binarySearch(Item arrInventory[], int key, int SIZE)
 {
