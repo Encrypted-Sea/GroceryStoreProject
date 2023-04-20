@@ -129,12 +129,21 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="search.cpp" />
+    <ClCompile Include="sort.cpp" />
+    <ClCompile Include="populate.cpp" />
+    <ClCompile Include="output.cpp" />
+    <ClCompile Include="validation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="localfunctions.h" />
     <ClInclude Include="item.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="InventoryId.txt" />
     <Text Include="InventoryList.txt" />
+    <Text Include="InventoryName.txt" />
+    <Text Include="InventoryPrice.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

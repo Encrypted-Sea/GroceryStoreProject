@@ -21,10 +21,34 @@
     <ClCompile Include="item.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="populate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="validation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="localfunctions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="InventoryList.txt" />
+    <Text Include="InventoryName.txt" />
+    <Text Include="InventoryId.txt" />
+    <Text Include="InventoryPrice.txt" />
   </ItemGroup>
 </Project>
